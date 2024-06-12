@@ -3,32 +3,64 @@
 #include <limits>
 using namespace std;
 
-// структура зберігає чисельник і знаменнник раціонального числа
-struct Rational {
+// rebuilt rational digit struct as a class
+class Rational {
+private:
     int numerator;
     int denominator;
+
+public:
+    Rational(int num1, int num2) {
+        this->setNumer(num1);
+        this->setDenom(num2);
+    }
+
+    void setNumer(int num) {
+        this->numerator = num;
+    }
+
+    void setDenom(int num)
+    {
+        this->denominator = num;
+    }
+
+    int getNumer() {
+        return this->numerator;
+    }
+
+    int getDenom() {
+        return this->denominator;
+    }
 };
 
-//максимальний розмір масиву
+//setting static values and algorythms as a separate class
+class OptimalBST {
+private:
+    static const int MAX = 300;
+    static const int INF = numeric_limits<int>::max();
+
+};
+
+//max range of  the array
 #define MAX 300
-//ініціалізація нескінченності
+//initialization of the infinity
 #define INF numeric_limits<int>::max()
 
 //пробна вибірка для тестування
 
 int sum[MAX];
-//t та root: Двовимірні вектори, які використовуються для зберігання 
-// результатів обчислень та коренів оптимальних піддерев.
+//t & root: 2-dimensional vectors used for storing 
+//results of the calculations and roots of optimal subtree
 int t[MAX][MAX];
 int root[MAX][MAX];
 
-// обчислює вагу піддерева з вершинами в i та j
+//calculates the weight of the subtree with vertexes i & j
 int weight(int i, int j, vector<Rational> m) {
     if (i > j) return 0;
     if (i > 0) {
         int total = 0;
         for (int k = i - 1; k <= j - 1; k++) {
-            total += m[k].numerator * m[k].denominator;
+            total += m[k].getNumer() * m[k].getDenom();
         }
         return total;
     }
@@ -37,7 +69,7 @@ int weight(int i, int j, vector<Rational> m) {
     }
 }
 
-//рекурсивно обходить всі можливі комбінації піддерев та зберігає результати в t та root
+//recursively gose through al possible combinations of subtrees and saves results at and root
 int go(int i, int j, vector<Rational> m) {
     if (i > j) return 0;
     if (t[i][j] == INF) {
@@ -52,16 +84,16 @@ int go(int i, int j, vector<Rational> m) {
     return t[i][j];
 }
 
-// виводить корінь(-ені) оптимального піддерева
+//prints root/-s of optimal subtree
 void printOptimalBST(int i, int j, int parent, vector<Rational> m) {
     if (i <= j) {
         int k = root[i][j];
-        cout << "Root: " << m[k - 1].numerator << endl;
+        cout << "Root: " << m[k - 1].getNumer() << endl;
     }
 }
 
 int main() {
-    // Перша вибірка (Цілі числа)
+    //first selection
     vector<Rational> m = {
     {4, 1},
     {10, 1},
@@ -74,14 +106,14 @@ int main() {
 
     int n = m.size();
 
-    // визначаємо t масив
+    //initiallize t array
     for (int i = 0; i < MAX; i++) {
         for (int j = 0; j < MAX; j++) {
             t[i][j] = INF;
         }
     }
 
-    // визначаємо root масив
+    //initiallize root array
     for (int i = 0; i < MAX; i++) {
         for (int j = 0; j < MAX; j++) {
             root[i][j] = -1;
@@ -91,7 +123,7 @@ int main() {
     sum[0] = 0;
     for (int i = 1; i <= n; i++) {
         t[i][i] = 0;
-        sum[i] = sum[i - 1] + m[i - 1].numerator * m[i - 1].denominator;
+        sum[i] = sum[i - 1] + m[i - 1].getNumer() * m[i - 1].getDenom();
     }
 
     int optimal_cost = go(1, n, m);
@@ -99,7 +131,7 @@ int main() {
 
     printOptimalBST(1, n, 0, m);
 
-    // Друга вибірка (Раціоанльні)
+    //second selection
     vector<Rational> m2 = {
         {4, 1},
         {10, 1},
@@ -112,14 +144,14 @@ int main() {
 
     n = m2.size();
 
-    // визначаємо t масив
+    //initiallize t array
     for (int i = 0; i < MAX; i++) {
         for (int j = 0; j < MAX; j++) {
             t[i][j] = INF;
         }
     }
 
-    // визначаємо root масив
+    //initiallize root array
     for (int i = 0; i < MAX; i++) {
         for (int j = 0; j < MAX; j++) {
             root[i][j] = -1;
@@ -129,7 +161,7 @@ int main() {
     sum[0] = 0;
     for (int i = 1; i <= n; i++) {
         t[i][i] = 0;
-        sum[i] = sum[i - 1] + m2[i - 1].numerator * m2[i - 1].denominator;
+        sum[i] = sum[i - 1] + m2[i - 1].getNumer() * m2[i - 1].getDenom();
     }
 
     int optimal_cost2 = go(1, n, m2);

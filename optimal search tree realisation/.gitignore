@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Project set up
+*.vcxproj
+*.filter

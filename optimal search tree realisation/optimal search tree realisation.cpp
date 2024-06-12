@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <vector>
 #include <limits>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 //rebuilt rational digit struct as a class
@@ -101,33 +103,28 @@ public:
     }
 };
 
-void runTests() {
+void runTests(const string& filename) {
     OptimalBST bst;
+    ifstream infile(filename);
+    string line;
 
-    vector<Rational> m1 = {
-        {4, 1},
-        {10, 1},
-        {6, 1},
-        {2, 1},
-        {3, 1},
-        {5, 1},
-        {7, 1}
-    };
-
-    vector<Rational> m2 = {
-        {4, 1},
-        {10, 1},
-        {6, 1},
-        {2, 6},
-        {3, 1},
-        {5, 3},
-        {7, 5}
-    };
-
-    bst.test(m1, 4);
-    bst.test(m2, 4);
+    while (getline(infile, line)) {
+        stringstream ss(line);
+        string index;
+        getline(ss, index, ':');
+        vector<Rational> m;
+        string rational;
+        while (getline(ss, rational, ';')) {
+            int num, denom;
+            stringstream rs(rational);
+            rs >> num >> denom;
+            m.emplace_back(num, denom);
+        }
+        bst.test(m, 4);
+    }
 }
 
 int main() {
-    runTests();
+    runTests("index.txt");
+    return 0;
 }

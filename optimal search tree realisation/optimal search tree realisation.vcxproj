@@ -128,6 +128,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="optimal search tree realisation.cpp" />
+    <ClCompile Include="OptimalBST.cpp" />
+    <ClCompile Include="Rational.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OptimalBST.h" />
+    <ClInclude Include="Rational.h" />
+    <ClInclude Include="runTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

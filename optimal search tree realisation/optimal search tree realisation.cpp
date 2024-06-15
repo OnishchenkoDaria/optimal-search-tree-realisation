@@ -3,17 +3,9 @@
 #include <limits>
 #include <fstream>
 #include <sstream>
-#include <mutex>
-#include <chrono>
-#include <thread>
-#include <atomic>
-#include <queue>
-#include <future>
-#include <condition_variable>
-
 using namespace std;
 
-//rational number class
+//rebuilt rational digit struct as a class
 class Rational {
 private:
     int numerator;
@@ -42,17 +34,18 @@ public:
     }
 };
 
-//optimalBST class with static values and algorithms
+//setting static values and algorithms as a separate class
 class OptimalBST {
 private:
     vector<vector<int>> t;
     vector<vector<int>> root;
     vector<int> sum;
 
-    mutex mtx;
-    condition_variable cv;
-    atomic<int> active_threads;
-    const int max_threads;
+public:
+    static const int MAX = 300;
+    static const int INF = numeric_limits<int>::max();
+
+    OptimalBST() : t(MAX, vector<int>(MAX, INF)), root(MAX, vector<int>(MAX, -1)), sum(MAX, 0) {}
 
     //calculates the weight of the subtree with vertices i & j
     int weight(int i, int j, const vector<Rational>& m) {
@@ -64,7 +57,7 @@ private:
         return total;
     }
 
-    //recursively goes through all possible combinations of subtrees and saves results in t and root
+    //recursively goes through all possible combinations of subtrees and saves results at t and root
     int go(int i, int j, const vector<Rational>& m) {
         if (i > j) return 0;
         if (t[i][j] == INF) {
@@ -79,7 +72,14 @@ private:
         return t[i][j];
     }
 
-    //preparing the rational vector
+    //print the structure of the optimal BST
+    void printOptimalBST(int i, int j, const vector<Rational>& m) {
+        if (i <= j) {
+            int k = root[i][j];
+            cout << "Root: " << m[k].getNumer() << endl;
+        }
+    }
+
     void initialize(const vector<Rational>& m) {
         int n = m.size();
         for (int i = 0; i < n; i++) {
@@ -93,104 +93,21 @@ private:
         }
     }
 
-public:
-    static const int MAX = 300;
-    static const int INF = numeric_limits<int>::max();
-
-    OptimalBST(int max_threads) : t(MAX, vector<int>(MAX, INF)), root(MAX, vector<int>(MAX, -1)), sum(MAX, 0), max_threads(max_threads), active_threads(0) {}
-
-    void testSequential(const vector<Rational>& m) {
+    void test(const vector<Rational>& m, int num_threads) {
         initialize(m);
         int n = m.size() - 1;
 
-        //fixation of time and summoning the algorithm in sequential workflow
-        auto start1 = chrono::high_resolution_clock::now();
         int optimal_cost = go(0, n, m);
-        auto finish1 = chrono::high_resolution_clock::now();
-
-        //time print
-        chrono::duration<double> worktime1 = finish1 - start1;
-        auto microtime1 = chrono::duration_cast<chrono::microseconds>(worktime1);
-        {
-            //lock_guard<mutex> lock(mtx);
-            cout << "sequential optimal cost of bst: " << optimal_cost << endl;
-            cout << "sequential optimal bst worktime: " << microtime1.count() << " mcs (Thread: " << this_thread::get_id() << ")" << endl;
-        }
-    }
-
-    void parallelGo(int i, int j, const vector<Rational>& m) {
-        //initialize a queue to hold work items
-        queue<pair<int, int>> work_queue;
-        work_queue.push({ i, j });
-
-        vector<thread> threads;
-
-        //work as long as items exist
-        while (!work_queue.empty()) {
-            //getting range from the queue
-            pair<int, int> range = work_queue.front();
-            work_queue.pop();
-
-            int start = range.first;
-            int end = range.second;
-
-            //skip this range if it is invalid
-            if (start > end) continue;
-
-            threads.emplace_back([this, start, end, &m]() {
-                int local_i = start;
-                int local_j = end;
-
-                for (int k = local_i; k <= local_j; k++) {
-                    int temp = go(local_i, k - 1, m) + go(k + 1, local_j, m) + weight(local_i, k - 1, m) + weight(k + 1, local_j, m);
-                    lock_guard<mutex> lock(this->mtx);
-                    if (temp < t[local_i][local_j]) {
-                        t[local_i][local_j] = temp;
-                        root[local_i][local_j] = k;
-                    }
-                }
-
-                {
-                    lock_guard<mutex> lock(this->mtx);
-                    cout << "parallel processing in thread: " << this_thread::get_id() << endl;
-                }
-                });
-        }
-
-        for (auto& thread : threads) {
-            thread.join();
-        }
-    }
-
-    void testParallel(const vector<Rational>& m, int num_threads) {
-        initialize(m);
-        int n = m.size() - 1;
-
-        auto start2 = chrono::high_resolution_clock::now();
-        parallelGo(0, n, m);
-        auto finish2 = chrono::high_resolution_clock::now();
-
-        int optimal_cost = t[0][n];
-        chrono::duration<double> worktime2 = finish2 - start2;
-        auto microtime2 = chrono::duration_cast<chrono::microseconds>(worktime2);
-        {
-            lock_guard<mutex> lock(mtx);
-            cout << "parallel optimal cost of bst: " << optimal_cost << endl;
-            cout << "parallel optimal worktime: " << microtime2.count() << " mcs" << endl;
-        }
+        cout << "Optimal cost of BST: " << optimal_cost << endl;
+        printOptimalBST(0, n, m);
     }
 };
 
 void runTests(const string& filename) {
-    OptimalBST bst(4);
+    OptimalBST bst;
     ifstream infile(filename);
     string line;
 
-    //for the read dataset
-    vector<vector<Rational>> testCases;
-    vector<string> indices;
-
-    //reading the file content and storing it in memory to avoid reading issues during multithreading
     while (getline(infile, line)) {
         stringstream ss(line);
         string index;
@@ -203,55 +120,8 @@ void runTests(const string& filename) {
             rs >> num >> denom;
             m.emplace_back(num, denom);
         }
-        indices.push_back(index);
-        testCases.push_back(m);
+        bst.test(m, 4);
     }
-
-    cout << "Executing Sequential Tests:" << endl;
-    auto sequential_start = chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < testCases.size(); ++i) {
-        cout << "testing set " << indices[i] << endl;
-        bst.testSequential(testCases[i]);
-    }
-    auto sequential_finish = chrono::high_resolution_clock::now();
-    chrono::duration<double> sequential_worktime = sequential_finish - sequential_start;
-    auto sequential_microtime = chrono::duration_cast<chrono::milliseconds>(sequential_worktime);
-    cout << "TOTAL DURATION OF SEQUENTIAL TESTS : " << sequential_microtime.count() << " ms" << endl;
-
-    cout << "\nExecuting Parallel Tests:" << endl;
-
-    //determine the number of threads to use
-    int num_threads = 4;
-    size_t data_size = testCases.size();
-    size_t chunk_size = (data_size + num_threads - 1) / num_threads;
-
-    //vector to hold the thread objects
-    vector<thread> threads;
-
-    auto parallel_start = chrono::high_resolution_clock::now();
-
-    //launch threads to process parts of data
-    for (int t = 0; t < num_threads; ++t) {
-        threads.emplace_back([&bst, &testCases, t, chunk_size, data_size, &indices]() {
-            size_t start_idx = t * chunk_size;
-            size_t end_idx = min(start_idx + chunk_size, data_size);
-
-            for (size_t i = start_idx; i < end_idx; ++i) {
-                cout << "testing set " << indices[i] << endl;
-                bst.testParallel(testCases[i], 4);
-            }
-            });
-    }
-
-    //wait for all threads to finish
-    for (auto& thread : threads) {
-        thread.join();
-    }
-
-    auto parallel_finish = chrono::high_resolution_clock::now();
-    chrono::duration<double> parallel_worktime = parallel_finish - parallel_start;
-    auto parallel_microtime = chrono::duration_cast<chrono::milliseconds>(parallel_worktime);
-    cout << "TOTAL DURATION OF PARALLEL TESTS: " << parallel_microtime.count() << " ms" << endl;
 }
 
 int main() {

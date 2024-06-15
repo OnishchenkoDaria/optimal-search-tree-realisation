@@ -104,79 +104,49 @@ public:
         int n = m.size() - 1;
 
         //fixation of time and summoning the algorithm in sequential workflow
-        auto start1 = chrono::high_resolution_clock::now();
         int optimal_cost = go(0, n, m);
-        auto finish1 = chrono::high_resolution_clock::now();
 
         //time print
-        chrono::duration<double> worktime1 = finish1 - start1;
-        auto microtime1 = chrono::duration_cast<chrono::microseconds>(worktime1);
         {
-            //lock_guard<mutex> lock(mtx);
+            lock_guard<mutex> lock(mtx);
             cout << "sequential optimal cost of bst: " << optimal_cost << endl;
-            cout << "sequential optimal bst worktime: " << microtime1.count() << " mcs (Thread: " << this_thread::get_id() << ")" << endl;
+            cout << "(Thread: " << this_thread::get_id() << ")" << endl;
         }
     }
 
     void parallelGo(int i, int j, const vector<Rational>& m) {
-        //initialize a queue to hold work items
-        queue<pair<int, int>> work_queue;
-        work_queue.push({ i, j });
+    int start = i;
+    int end = j;
 
-        vector<thread> threads;
-
-        //work as long as items exist
-        while (!work_queue.empty()) {
-            //getting range from the queue
-            pair<int, int> range = work_queue.front();
-            work_queue.pop();
-
-            int start = range.first;
-            int end = range.second;
-
-            //skip this range if it is invalid
-            if (start > end) continue;
-
-            threads.emplace_back([this, start, end, &m]() {
-                int local_i = start;
-                int local_j = end;
-
-                for (int k = local_i; k <= local_j; k++) {
-                    int temp = go(local_i, k - 1, m) + go(k + 1, local_j, m) + weight(local_i, k - 1, m) + weight(k + 1, local_j, m);
-                    lock_guard<mutex> lock(this->mtx);
-                    if (temp < t[local_i][local_j]) {
-                        t[local_i][local_j] = temp;
-                        root[local_i][local_j] = k;
-                    }
+    auto lambda = [&]() {
+        for (int k = start; k <= end; ++k) {
+            int temp = go(start, k - 1, m) + go(k + 1, end, m) + weight(start, k - 1, m) + weight(k + 1, end, m);
+            {
+                lock_guard<mutex> lock(mtx);
+                if (temp < t[start][end]) {
+                    t[start][end] = temp;
+                    root[start][end] = k;
                 }
-
-                {
-                    lock_guard<mutex> lock(this->mtx);
-                    cout << "parallel processing in thread: " << this_thread::get_id() << endl;
-                }
-                });
+            }
         }
+    };
 
-        for (auto& thread : threads) {
-            thread.join();
-        }
-    }
+    lambda();
+}
+
+
 
     void testParallel(const vector<Rational>& m, int num_threads) {
         initialize(m);
         int n = m.size() - 1;
 
-        auto start2 = chrono::high_resolution_clock::now();
         parallelGo(0, n, m);
-        auto finish2 = chrono::high_resolution_clock::now();
-
+        
         int optimal_cost = t[0][n];
-        chrono::duration<double> worktime2 = finish2 - start2;
-        auto microtime2 = chrono::duration_cast<chrono::microseconds>(worktime2);
         {
             lock_guard<mutex> lock(mtx);
             cout << "parallel optimal cost of bst: " << optimal_cost << endl;
-            cout << "parallel optimal worktime: " << microtime2.count() << " mcs" << endl;
+            cout << "(Thread: " << this_thread::get_id() << ")" << endl;
         }
     }
 };

@@ -8,9 +8,9 @@ using namespace std;
 class OptimalBST
 {
 private:
-    vector<vector<int>> t;
+    //vector<vector<int>> t;
     vector<vector<int>> root;
-    vector<int> sum;
+    //vector<int> sum;
 
     mutex mtx;
     condition_variable cv;
@@ -20,6 +20,13 @@ private:
     //singleton instance
     static OptimalBST* instance;
     static mutex instance_mutex;
+
+public:
+    vector<vector<int>> t;
+    vector<int> sum;
+
+    static const int MAX = 300;
+    static const int INF = numeric_limits<int>::max();
 
     OptimalBST(int max_threads) : t(MAX, vector<int>(MAX, INF)), root(MAX, vector<int>(MAX, -1)), sum(MAX, 0), max_threads(max_threads), active_threads(0) {}
 
@@ -31,10 +38,6 @@ private:
 
     //preparing the rational vector
     void initialize(const vector<Rational>& m);
-
-public:
-    static const int MAX = 300;
-    static const int INF = numeric_limits<int>::max();
 
     //thread-safe Singleton getter
     static OptimalBST* getInstance(int max_threads);

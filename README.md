@@ -1,6 +1,6 @@
 #The optimal binary search algorithm using threads
 ---
-*the project shows the work of the algorithm of finding the vertex for optimal B tree completed in only and multiple threads with the time comparison*
+###*the project shows the work of the algorithm of finding the vertex for optimal B tree completed in only and multiple threads with the time comparison*
 ---
 The program has 3 classes: 
 

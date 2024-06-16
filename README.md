@@ -11,8 +11,10 @@ The program has 3 classes:
 At the end the time of each test is displayed for user to compare
 For example in this realization our program takes 100 records of prepared vertexes dataset from `index.txt`
 The time difference is following:
+
 ![image](https://github.com/OnishchenkoDaria/optimal-search-tree-realisation/assets/145560302/8a4c2dcd-10f7-467d-b60a-c9a84d40ffad)
 ![image](https://github.com/OnishchenkoDaria/optimal-search-tree-realisation/assets/145560302/9276e83d-cefb-480d-bd14-971b694d21b4)
+
 so we can see that with enlarging the dataset the time effectiveness would grow that is why using multiple threads is benefitial
 
 ---

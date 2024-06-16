@@ -19,8 +19,8 @@
 using namespace std;
 
 //initialize the Singleton instance and mutex
-OptimalBST* OptimalBST::instance = nullptr;
-mutex OptimalBST::instance_mutex;
+//OptimalBST* OptimalBST::instance = nullptr;
+//mutex OptimalBST::instance_mutex;
 
 int main() {
     runTests("index.txt");

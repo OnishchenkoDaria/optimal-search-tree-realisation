@@ -18,10 +18,12 @@ private:
     const int max_threads;
 
     //singleton instance
-    static OptimalBST* instance;
-    static mutex instance_mutex;
 
 public:
+    static mutex instance_mutex;
+
+    static OptimalBST* instance;
+
     vector<vector<int>> t;
     vector<int> sum;
 
@@ -49,3 +51,5 @@ public:
     void testParallel(const vector<Rational>& m, int num_threads);
 };
 
+OptimalBST*  OptimalBST::instance = nullptr;
+mutex OptimalBST::instance_mutex /*= nullptr*/ ;

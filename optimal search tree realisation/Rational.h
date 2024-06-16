@@ -6,10 +6,11 @@ private:
     int denominator;
 
 public:
-    Rational(int num1, int num2) {
-        this->setNumer(num1);
-        this->setDenom(num2);
-    }
+    Rational(int num1, int num2) :numerator(num1),denominator(num2)
+    {}
+
+    Rational() :numerator(0),denominator(0)
+    {}
 
     void setNumer(int num);
 

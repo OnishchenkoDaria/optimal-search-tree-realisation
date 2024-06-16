@@ -7,9 +7,19 @@
 #include <chrono>
 using namespace std;
 
+/// @file runTests.h
+/// @brief Defines the runTests class for running tests on OptimalBST.
+
+/// @class runTests
+/// @brief Class for running sequential and parallel tests on OptimalBST.
+///
+/// This class reads a dataset from a file, stores it in memory, and executes both sequential
+/// and parallel tests on the OptimalBST using the data.
 class runTests
 {
 public:
+    /// @brief Constructs a runTests object and executes tests.
+    /// @param filename Name of the file containing test data.
     runTests(const string& filename) {
         OptimalBST* bst = OptimalBST::getInstance(4);
         ifstream infile(filename);

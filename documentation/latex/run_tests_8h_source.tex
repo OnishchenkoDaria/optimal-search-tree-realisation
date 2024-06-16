@@ -1,0 +1,93 @@
+\doxysection{run\+Tests.\+h}
+\hypertarget{run_tests_8h_source}{}\label{run_tests_8h_source}\index{C:/Users/User/Desktop/optimal tree/optimal search tree realisation/optimal search tree realisation/runTests.h@{C:/Users/User/Desktop/optimal tree/optimal search tree realisation/optimal search tree realisation/runTests.h}}
+\mbox{\hyperlink{run_tests_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{run_tests_8h}{runTests.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{_optimal_b_s_t_8h}{OptimalBST.h}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrun_tests}{runTests}}}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classrun_tests_a7f1ef2c8834e85db7bc14c07ea45a73f}{runTests}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\&\ filename)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_optimal_b_s_t}{OptimalBST}}*\ bst\ =\ \mbox{\hyperlink{class_optimal_b_s_t_a1a4733d3fccc7ce9cf557b75970f882f}{OptimalBST::getInstance}}(4);}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ ifstream\ infile(filename);}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ line;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//for\ the\ read\ dataset}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ vector<vector<Rational>>\ testCases;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ vector<string>\ indices;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{comment}{//reading\ the\ file\ content\ and\ storing\ it\ in\ memory\ to\ avoid\ reading\ issues\ during\ multithreading}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (getline(infile,\ line))\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ stringstream\ ss(line);}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ index;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ getline(ss,\ index,\ \textcolor{charliteral}{':'});}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ vector<Rational>\ m;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ rational;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (getline(ss,\ rational,\ \textcolor{charliteral}{';'}))\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ num,\ denom;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stringstream\ rs(rational);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rs\ >>\ num\ >>\ denom;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m.emplace\_back(num,\ denom);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ indices.push\_back(index);}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ testCases.push\_back(m);}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Executing\ Sequential\ Tests:"{}}\ <<\ endl;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ sequential\_start\ =\ chrono::high\_resolution\_clock::now();}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ testCases.size();\ ++i)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Testing\ set\ "{}}\ <<\ indices[i]\ <<\ endl;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ bst-\/>\mbox{\hyperlink{class_optimal_b_s_t_a8cc7dcd1ae990dd96f94331043ff8b59}{testSequential}}(testCases[i]);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ sequential\_finish\ =\ chrono::high\_resolution\_clock::now();}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ chrono::duration<double>\ sequential\_worktime\ =\ sequential\_finish\ -\/\ sequential\_start;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ sequential\_microtime\ =\ chrono::duration\_cast<chrono::milliseconds>(sequential\_worktime);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}TOTAL\ DURATION\ OF\ SEQUENTIAL\ TESTS\ :\ "{}}\ <<\ sequential\_microtime.count()\ <<\ \textcolor{stringliteral}{"{}\ ms"{}}\ <<\ endl;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)nExecuting\ Parallel\ Tests:"{}}\ <<\ endl;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{comment}{//determine\ the\ number\ of\ threads\ to\ use}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ num\_threads\ =\ 4;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ data\_size\ =\ testCases.size();}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ chunk\_size\ =\ (data\_size\ +\ num\_threads\ -\/\ 1)\ /\ num\_threads;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//vector\ to\ hold\ the\ thread\ objects}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ vector<thread>\ threads;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ parallel\_start\ =\ chrono::high\_resolution\_clock::now();}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{comment}{//launch\ threads\ to\ process\ parts\ of\ data}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ t\ =\ 0;\ t\ <\ num\_threads;\ ++t)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ threads.emplace\_back([bst,\ \&testCases,\ t,\ chunk\_size,\ data\_size,\ \&indices]()\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\_idx\ =\ t\ *\ chunk\_size;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ end\_idx\ =\ min(start\_idx\ +\ chunk\_size,\ data\_size);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start\_idx;\ i\ <\ end\_idx;\ ++i)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Testing\ set\ "{}}\ <<\ indices[i]\ <<\ endl;}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bst-\/>\mbox{\hyperlink{class_optimal_b_s_t_a0d93439bc72c22c38494d08ce078ef4c}{testParallel}}(testCases[i],\ 4);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{comment}{//wait\ for\ all\ threads\ to\ finish}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ thread\ :\ threads)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ thread.join();}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ parallel\_finish\ =\ chrono::high\_resolution\_clock::now();}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ chrono::duration<double>\ parallel\_worktime\ =\ parallel\_finish\ -\/\ parallel\_start;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ parallel\_microtime\ =\ chrono::duration\_cast<chrono::milliseconds>(parallel\_worktime);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}TOTAL\ DURATION\ OF\ PARALLEL\ TESTS:\ "{}}\ <<\ parallel\_microtime.count()\ <<\ \textcolor{stringliteral}{"{}\ ms"{}}\ <<\ endl;}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \};}
+\DoxyCodeLine{00096\ }
+
+\end{DoxyCode}

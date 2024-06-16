@@ -1,0 +1,231 @@
+\doxysection{Optimal\+BST Class Reference}
+\hypertarget{class_optimal_b_s_t}{}\label{class_optimal_b_s_t}\index{OptimalBST@{OptimalBST}}
+
+
+Class representing an Optimal Binary Search Tree (BST).  
+
+
+
+
+{\ttfamily \#include $<$Optimal\+BST.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_optimal_b_s_t_a3aa33151b22122a3918452f568a5dfde}{Optimal\+BST}} (int max\+\_\+threads)
+\begin{DoxyCompactList}\small\item\em Constructs an \doxylink{class_optimal_b_s_t}{Optimal\+BST} object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_optimal_b_s_t_a9e31d12497d51afefbf97d175db030c3}{weight}} (int i, int j, const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Calculates the weight of the subtree with vertices i and j. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_optimal_b_s_t_a9246af3cf2f87cd17c07bdcf9872d759}{go}} (int i, int j, const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Recursively calculates costs and roots for all possible subtrees. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_optimal_b_s_t_aa3f3526de0521c7430d43f3753c73b2b}{initialize}} (const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Prepares the \doxylink{class_rational}{Rational} vector. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_optimal_b_s_t_a8cc7dcd1ae990dd96f94331043ff8b59}{test\+Sequential}} (const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Tests the sequential construction of the optimal BST. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_optimal_b_s_t_a216872469c33016c6d87c28e378771c4}{parallel\+Go}} (int i, int j, const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&m)
+\begin{DoxyCompactList}\small\item\em Parallel version of the go function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_optimal_b_s_t_a0d93439bc72c22c38494d08ce078ef4c}{test\+Parallel}} (const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&m, int num\+\_\+threads)
+\begin{DoxyCompactList}\small\item\em Tests the parallel construction of the optimal BST. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_optimal_b_s_t}{Optimal\+BST}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_optimal_b_s_t_a1a4733d3fccc7ce9cf557b75970f882f}{get\+Instance}} (int max\+\_\+threads)
+\begin{DoxyCompactList}\small\item\em Returns the singleton instance of \doxylink{class_optimal_b_s_t}{Optimal\+BST}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_optimal_b_s_t_a7c291bcd22243858b4ae19355a917563}\label{class_optimal_b_s_t_a7c291bcd22243858b4ae19355a917563} 
+vector$<$ vector$<$ int $>$ $>$ {\bfseries t}
+\begin{DoxyCompactList}\small\item\em Matrix storing costs of subtrees. \end{DoxyCompactList}\item 
+\Hypertarget{class_optimal_b_s_t_a109f5188eef5697fd5dd4a4a73171cfb}\label{class_optimal_b_s_t_a109f5188eef5697fd5dd4a4a73171cfb} 
+vector$<$ int $>$ {\bfseries sum}
+\begin{DoxyCompactList}\small\item\em Vector storing cumulative sums. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_optimal_b_s_t_a08b8d8aab3ed9aa9912038cb461fdd5d}\label{class_optimal_b_s_t_a08b8d8aab3ed9aa9912038cb461fdd5d} 
+static mutex {\bfseries instance\+\_\+mutex}
+\begin{DoxyCompactList}\small\item\em Mutex for thread-\/safe singleton access. \end{DoxyCompactList}\item 
+\Hypertarget{class_optimal_b_s_t_a07b5be20f2ee160248388019c06d9dea}\label{class_optimal_b_s_t_a07b5be20f2ee160248388019c06d9dea} 
+static \mbox{\hyperlink{class_optimal_b_s_t}{Optimal\+BST}} \texorpdfstring{$\ast$}{*} {\bfseries instance} = nullptr
+\begin{DoxyCompactList}\small\item\em Singleton instance of \doxylink{class_optimal_b_s_t}{Optimal\+BST}. \end{DoxyCompactList}\item 
+\Hypertarget{class_optimal_b_s_t_aea734b38186eef3e167dbf3fc06c897d}\label{class_optimal_b_s_t_aea734b38186eef3e167dbf3fc06c897d} 
+static const int {\bfseries MAX} = 300
+\begin{DoxyCompactList}\small\item\em Maximum size of the matrices. \end{DoxyCompactList}\item 
+\Hypertarget{class_optimal_b_s_t_a591f5d98dcc4f893d99cf973b8bdd245}\label{class_optimal_b_s_t_a591f5d98dcc4f893d99cf973b8bdd245} 
+static const int {\bfseries INF} = numeric\+\_\+limits$<$int$>$\+::max()
+\begin{DoxyCompactList}\small\item\em Infinity value for initialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class representing an Optimal Binary Search Tree (BST). 
+
+The \doxylink{class_optimal_b_s_t}{Optimal\+BST} class includes methods for calculating and constructing an optimal BST using both sequential and parallel approaches. It uses a Singleton pattern to ensure a single instance of the class is created and provides thread-\/safe operations. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_optimal_b_s_t_a3aa33151b22122a3918452f568a5dfde}\index{OptimalBST@{OptimalBST}!OptimalBST@{OptimalBST}}
+\index{OptimalBST@{OptimalBST}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{OptimalBST()}{OptimalBST()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a3aa33151b22122a3918452f568a5dfde} 
+Optimal\+BST\+::\+Optimal\+BST (\begin{DoxyParamCaption}\item[{int}]{max\+\_\+threads}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructs an \doxylink{class_optimal_b_s_t}{Optimal\+BST} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+threads} & Maximum number of threads allowed for parallel operations. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_optimal_b_s_t_a1a4733d3fccc7ce9cf557b75970f882f}\index{OptimalBST@{OptimalBST}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a1a4733d3fccc7ce9cf557b75970f882f} 
+\mbox{\hyperlink{class_optimal_b_s_t}{Optimal\+BST}} \texorpdfstring{$\ast$}{*} Optimal\+BST\+::get\+Instance (\begin{DoxyParamCaption}\item[{int}]{max\+\_\+threads}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Returns the singleton instance of \doxylink{class_optimal_b_s_t}{Optimal\+BST}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+threads} & Maximum number of threads allowed for parallel operations. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Singleton instance of \doxylink{class_optimal_b_s_t}{Optimal\+BST}. 
+\end{DoxyReturn}
+\Hypertarget{class_optimal_b_s_t_a9246af3cf2f87cd17c07bdcf9872d759}\index{OptimalBST@{OptimalBST}!go@{go}}
+\index{go@{go}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{go()}{go()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a9246af3cf2f87cd17c07bdcf9872d759} 
+int Optimal\+BST\+::go (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{, }\item[{const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&}]{m}{}\end{DoxyParamCaption})}
+
+
+
+Recursively calculates costs and roots for all possible subtrees. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Starting index of the subtree. \\
+\hline
+{\em j} & Ending index of the subtree. \\
+\hline
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Cost of the subtree.//recursively goes through all possible combinations of subtrees and saves results in t and root
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Starting index of the subtree. \\
+\hline
+{\em j} & Ending index of the subtree. \\
+\hline
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Cost of the subtree. 
+\end{DoxyReturn}
+\Hypertarget{class_optimal_b_s_t_aa3f3526de0521c7430d43f3753c73b2b}\index{OptimalBST@{OptimalBST}!initialize@{initialize}}
+\index{initialize@{initialize}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_aa3f3526de0521c7430d43f3753c73b2b} 
+void Optimal\+BST\+::initialize (\begin{DoxyParamCaption}\item[{const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&}]{m}{}\end{DoxyParamCaption})}
+
+
+
+Prepares the \doxylink{class_rational}{Rational} vector. 
+
+Prepares the \doxylink{class_rational}{Rational} vector and initializes the matrices.
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_optimal_b_s_t_a216872469c33016c6d87c28e378771c4}\index{OptimalBST@{OptimalBST}!parallelGo@{parallelGo}}
+\index{parallelGo@{parallelGo}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{parallelGo()}{parallelGo()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a216872469c33016c6d87c28e378771c4} 
+void Optimal\+BST\+::parallel\+Go (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{, }\item[{const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&}]{m}{}\end{DoxyParamCaption})}
+
+
+
+Parallel version of the go function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Starting index of the subtree. \\
+\hline
+{\em j} & Ending index of the subtree. \\
+\hline
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_optimal_b_s_t_a0d93439bc72c22c38494d08ce078ef4c}\index{OptimalBST@{OptimalBST}!testParallel@{testParallel}}
+\index{testParallel@{testParallel}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{testParallel()}{testParallel()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a0d93439bc72c22c38494d08ce078ef4c} 
+void Optimal\+BST\+::test\+Parallel (\begin{DoxyParamCaption}\item[{const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&}]{m}{, }\item[{int}]{num\+\_\+threads}{}\end{DoxyParamCaption})}
+
+
+
+Tests the parallel construction of the optimal BST. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+{\em num\+\_\+threads} & Number of threads to be used for parallel construction. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_optimal_b_s_t_a8cc7dcd1ae990dd96f94331043ff8b59}\index{OptimalBST@{OptimalBST}!testSequential@{testSequential}}
+\index{testSequential@{testSequential}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{testSequential()}{testSequential()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a8cc7dcd1ae990dd96f94331043ff8b59} 
+void Optimal\+BST\+::test\+Sequential (\begin{DoxyParamCaption}\item[{const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&}]{m}{}\end{DoxyParamCaption})}
+
+
+
+Tests the sequential construction of the optimal BST. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_optimal_b_s_t_a9e31d12497d51afefbf97d175db030c3}\index{OptimalBST@{OptimalBST}!weight@{weight}}
+\index{weight@{weight}!OptimalBST@{OptimalBST}}
+\doxysubsubsection{\texorpdfstring{weight()}{weight()}}
+{\footnotesize\ttfamily \label{class_optimal_b_s_t_a9e31d12497d51afefbf97d175db030c3} 
+int Optimal\+BST\+::weight (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{, }\item[{const vector$<$ \mbox{\hyperlink{class_rational}{Rational}} $>$ \&}]{m}{}\end{DoxyParamCaption})}
+
+
+
+Calculates the weight of the subtree with vertices i and j. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Starting index of the subtree. \\
+\hline
+{\em j} & Ending index of the subtree. \\
+\hline
+{\em m} & Vector of \doxylink{class_rational}{Rational} numbers. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Weight of the subtree. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+User/\+Desktop/optimal tree/optimal search tree realisation/optimal search tree realisation/\mbox{\hyperlink{_optimal_b_s_t_8h}{Optimal\+BST.\+h}}\item 
+C\+:/\+Users/\+User/\+Desktop/optimal tree/optimal search tree realisation/optimal search tree realisation/Optimal\+BST.\+cpp\end{DoxyCompactItemize}

@@ -18,9 +18,19 @@
 #include "runTests.h"
 using namespace std;
 
-//initialize the Singleton instance and mutex
-//OptimalBST* OptimalBST::instance = nullptr;
-//mutex OptimalBST::instance_mutex;
+/// @file main.cpp
+/// @brief The main file to run the tests on OptimalBST.
+///
+/// This file includes necessary standard libraries and custom headers required
+/// for testing the Optimal Binary Search Tree implementation. The main function
+/// calls the runTests function with the specified input file.
+
+/// @brief The main method where the tests are summoned.
+/// 
+/// The main function initializes the testing process by calling the `runTests`
+/// function with the input file `index.txt`.
+///
+/// @return Returns 0 upon successful execution.
 
 int main() {
     runTests("index.txt");
